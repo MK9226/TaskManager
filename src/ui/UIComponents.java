@@ -14,7 +14,7 @@ public class UIComponents {
 
     // =========================
     // INPUTS
-    // =========================
+    // ========================
 
     public TextField titleField =  new TextField();
     public TextArea descriptionField  = new TextArea();
@@ -26,6 +26,8 @@ public class UIComponents {
     // =========================
     // BUTTONS
     // =========================
+
+    public Button newTaskButton = new Button("+ New Task");
 
     public Button addButton = new Button("Add");
     public Button editButton = new Button("Edit");
@@ -51,10 +53,18 @@ public class UIComponents {
     public ListView<Task> taskListView = new ListView<>();
 
     // =========================
+    // EXTRA CONTAINERS
+    // =========================
+
+    public VBox formBox;
+    public HBox actionBox;
+    public HBox searchBox;
+
+    // =========================
     // MAIN LAYOUT
     // =========================
 
-    private VBox layout;
+    private BorderPane layout;
 
     // =========================
     // CONSTRUCTOR
@@ -84,7 +94,7 @@ public class UIComponents {
         descriptionField.setPrefRowCount(4);
 
         searchField.setPromptText("Search Tasks");
-        searchField.setPrefWidth(250);
+        searchField.setPrefWidth(350);
 
         //Priority
 
@@ -102,6 +112,9 @@ public class UIComponents {
 
         //Button Sizes
 
+        newTaskButton.setPrefWidth(140);
+        newTaskButton.setPrefHeight(40);
+
         addButton.setPrefWidth(120);
         editButton.setPrefWidth(120);
         deleteButton.setPrefWidth(120);
@@ -111,7 +124,7 @@ public class UIComponents {
         searchButton.setPrefWidth(50);
         searchButton.setPrefHeight(35);
 
-        languageButton.setPrefHeight(60);
+        languageButton.setPrefHeight(40);
 
         // CSS IDs
 
@@ -124,7 +137,7 @@ public class UIComponents {
         // Task List
 
         taskListView.setItems(taskList);
-        taskListView.setPrefHeight(350);
+        taskListView.setPrefHeight(400);
 
     }
 
@@ -134,41 +147,25 @@ public class UIComponents {
 
     private void createLayout(){
 
+        layout = new BorderPane();
+
         // Header
 
         BorderPane header  = new BorderPane();
 
-        header.setLeft(titleLabel);
+        HBox leftHeader = new HBox(
+                15,
+                titleField,
+                newTaskButton);
+
+        leftHeader.setAlignment(Pos.CENTER_LEFT);
+
+        header.setLeft(leftHeader);
         header.setRight(languageButton);
-
-        // Controls
-
-        HBox topControls = new HBox(
-                10,
-                priorityBox,
-                categoryBox,
-                datePicker,
-                searchField
-        );
-
-        topControls.setAlignment(Pos.CENTER);
-
-        // Button
-
-        HBox buttonLayout = new HBox(
-                10,
-                addButton,
-                editButton,
-                deleteButton,
-                completeButton,
-                clearButton
-        );
-
-        buttonLayout.setAlignment(Pos.CENTER);
 
         // Search
 
-        HBox searchBox = new HBox(
+          searchBox = new HBox(
                 10,
                 searchField,
                 searchButton
@@ -176,29 +173,75 @@ public class UIComponents {
 
         searchBox.setAlignment(Pos.CENTER_LEFT);
 
-        // Main Layout
+        // Form
 
-        layout = new VBox(15);
-
-        layout.setPadding(new Insets(20));
-
-        layout.getChildren().addAll(
-                header,
+        formBox = new VBox(
+                10,
                 titleField,
                 descriptionField,
-                topControls,
-                buttonLayout,
-                searchBox,
-                taskListView,
-                statusLabel
+                priorityBox,
+                categoryBox,
+                datePicker,
+                addButton);
+
+        formBox.setVisible(false);
+        formBox.setManaged(false);
+
+        // Action Buttons
+
+        actionBox = new HBox(
+                10,
+                editButton,
+                deleteButton,
+                completeButton,
+                clearButton
         );
+
+        actionBox.setAlignment(Pos.CENTER_LEFT);
+
+        // Top Section
+
+        VBox topSection = new VBox(
+                15,
+                header,
+                searchBox,
+                formBox,
+                actionBox
+        );
+
+        topSection.setPadding(new Insets(20));
+
+        // Center Section
+
+        VBox centerSection = new VBox(taskListView);
+
+        centerSection.setPadding(new Insets(0,
+                20,
+                20,
+                20));
+
+        // Bottom Section
+
+        HBox bottomSection = new HBox(statusLabel);
+
+        bottomSection.setPadding(new Insets(0,
+                20,
+                20,
+                20));
+
+        // Root
+
+        layout.setTop(topSection);
+        layout.setCenter(centerSection);
+        layout.setBottom(bottomSection);
+
     }
 
     // =========================
     // GET LAYOUT
     // =========================
 
-    public VBox getLayout(){
+    public BorderPane getLayout(){
         return layout;
     }
 

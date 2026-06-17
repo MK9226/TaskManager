@@ -4,6 +4,8 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.Label;
+import javafx.scene.input.KeyCode;
 
 import language.LanguageManager;
 
@@ -45,6 +47,29 @@ public class EventHandlers {
 
         updateStatus();
 
+        uiComponents.taskListView.setPlaceholder(
+                new Label(
+                        "No tasks yet. \nClick + New Task to get started."
+                )
+        );
+
+        // =========================
+        // TOGGLE TASK FORM
+        // =========================
+
+        uiComponents.newTaskButton.setOnAction(e -> {
+
+            boolean visible =
+                    uiComponents.formBox.isVisible();
+
+            uiComponents.formBox.setVisible(!visible);
+            uiComponents.formBox.setManaged(!visible);
+
+            if(!visible){
+                uiComponents.titleField.requestFocus();
+            }
+        });
+
         // =========================
         // LANGUAGE SWITCH
         // =========================
@@ -71,6 +96,9 @@ public class EventHandlers {
 
             fileService.saveTasks(uiComponents.taskList);
             updateStatus();
+
+            uiComponents.formBox.setVisible(false);
+            uiComponents.formBox.setManaged(false);
         });
 
         // =========================
@@ -106,6 +134,10 @@ public class EventHandlers {
         // =========================
 
         uiComponents.editButton.setOnAction(e -> {
+
+            uiComponents.formBox.setVisible(true);
+            uiComponents.formBox.setManaged(true);
+
             Task selectedTask = uiComponents.taskListView.
                     getSelectionModel().getSelectedItem();
 
@@ -162,6 +194,8 @@ public class EventHandlers {
                 return;
             }
 
+            uiComponents.taskListView.scrollTo(0);
+
             ObservableList<Task> filteredTasks = FXCollections.observableArrayList();
 
             for(Task task : uiComponents.taskList)
@@ -215,6 +249,25 @@ public class EventHandlers {
                         uiComponents.taskListView.setItems(uiComponents.taskList);
                     }
                 });
+
+
+
+        // =========================
+        // CLOSE FORM WITH ESCAPE
+        // =========================
+
+        uiComponents.titleField.sceneProperty().addListener((observable, oldValue, newValue) -> {
+            if(newValue != null)
+            {
+                newValue.setOnKeyPressed(e -> {
+                   if (e.getCode() == KeyCode.ENTER &&
+                   uiComponents.formBox.isVisible()) {
+                       uiComponents.formBox.setVisible(false);
+                       uiComponents.formBox.setManaged(false);
+                   }
+                });
+            }
+        });
     }
 
     // =========================

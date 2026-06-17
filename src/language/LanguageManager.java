@@ -19,6 +19,8 @@ public class LanguageManager {
         {
             ui.titleLabel.setText("Aufgabenmanager");
 
+            ui.newTaskButton.setText("+ Neue Aufgabe");
+
             ui.titleField.setPromptText("Aufgabentitel");
             ui.descriptionField.setPromptText("Aufgabenbeschreibung");
 
@@ -53,10 +55,12 @@ public class LanguageManager {
         }
         else
         {
-            ui.titleLabel.setText("Tax Manager");
+            ui.titleLabel.setText("Task Manager");
+
+            ui.newTaskButton.setText("+ New Task");
 
             ui.titleField.setPromptText("Tax Title");
-            ui.descriptionField.setPromptText("Tax Description");
+            ui.descriptionField.setPromptText("Task Description");
 
             ui.addButton.setText("Add");
             ui.editButton.setText("Edit");
