@@ -1,0 +1,3 @@
+Gym;;Lower Body Day;;Medium;;Health;;2026-06-26;;false
+Practice German;;;;High;;Study;;2026-06-26;;false
+Read Non-Fictional;;;;Low;;Study;;2026-06-26;;false

@@ -139,6 +139,78 @@ public class UIComponents {
         taskListView.setItems(taskList);
         taskListView.setPrefHeight(400);
 
+        taskListView.setCellFactory(list -> new ListCell<Task>()
+        {
+            @Override
+            protected void updateItem(Task task, boolean empty)
+            {
+                super.updateItem(task, empty);
+
+                if(empty || task == null)
+                {
+                    setText(null);
+                    setGraphic(null);
+                    return;
+                }
+
+                //Priority Indicator
+                Label priorityIndicator = new Label("●");
+                priorityIndicator.setStyle("-fx-font-size: 18px;");
+
+                switch(task.getPriority())
+                {
+                    case "Low":
+                        priorityIndicator.setStyle("-fx-text-fill: #22C55E;"+
+                                "-fx-font-size: 18px;");
+                        break;
+
+                    case "Medium":
+                        priorityIndicator.setStyle("-fx-text-fill:#FACC15;"+
+                                "-fx-font-size: 18px;");
+                        break;
+
+                    case "High":
+                        priorityIndicator.setStyle(
+                                "-fx-text-fill:#EF4444;"+
+                                 "-fx-font-size: 18px;"
+                        );
+                        break;
+
+                    case "Urgent":
+                        priorityIndicator.setStyle(
+                                "-fx-text-fill:#991B1B;"+
+                                "-fx-font-size: 18px;"
+                        );
+                        break;
+
+                    default:
+                        priorityIndicator.setStyle(
+                                "-fx-text-fill:gray;"+
+                                "-fx-font-size: 18px;"
+                        );
+                }
+
+                // Task Text
+                Label taskLabel = new Label(task.toString());
+
+                if(task.isCompleted())
+                {
+                    taskLabel.setStyle("-fx-strikethrough: true;"+
+                            "-fx-text-fill: gray;");
+                }
+                else
+                {
+                    taskLabel.setStyle("-fx-font-size: 14px;");
+                }
+
+                HBox row = new HBox(10);
+                row.setAlignment(Pos.CENTER_LEFT);
+                row.getChildren().addAll(priorityIndicator,taskLabel);
+
+                setGraphic(row);
+            }
+        });
+
     }
 
     // =========================
